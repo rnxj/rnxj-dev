@@ -1,32 +1,8 @@
-import { Analytics } from "@vercel/analytics/react";
-import { useEffect, useRef } from "react";
-import {
-  CopyEmail,
-  IstClock,
-  MagneticLink,
-  PhoneFrame,
-  ProjectVideo,
-  ResponsivePicture,
-  SignalField,
-} from "./components";
-import {
-  education,
-  experience,
-  identity,
-  luxe,
-  projects,
-  skills,
-  victoriousMinistries,
-} from "./content";
-
-function AppIcon({ alt, base }: { alt: string; base: string }) {
-  return (
-    <picture className="app-icon">
-      <source type="image/avif" srcSet={`${base}.avif`} />
-      <img src={`${base}.webp`} width="256" height="256" alt={alt} loading="lazy" />
-    </picture>
-  );
-}
+import { Fragment, useEffect, useRef } from "react";
+import { CopyEmail, IstClock, MagneticLink, ProjectVideo, ResponsivePicture } from "./components";
+import { education, experience, identity, projects, skills } from "./content";
+import { LuxeStory, VictoriousMinistriesStory } from "./FlagshipStories";
+import { ProjectAperture } from "./ProjectAperture";
 
 function SectionHeading({ eyebrow, id, title }: { eyebrow: string; id: string; title: string }) {
   return (
@@ -37,159 +13,45 @@ function SectionHeading({ eyebrow, id, title }: { eyebrow: string; id: string; t
   );
 }
 
-function Metrics({ facts }: { facts: ReadonlyArray<readonly [string, string]> }) {
-  return (
-    <dl className="metrics" aria-label="Project scale">
-      {facts.map(([value, label]) => (
-        <div key={label}>
-          <dt>{label}</dt>
-          <dd>{value}</dd>
-        </div>
-      ))}
-    </dl>
-  );
+function SkillLabel({ value }: { value: string }) {
+  const parts = value.split("/");
+
+  return parts.map((part, index) => (
+    <Fragment key={`${part}-${index}`}>
+      {part}
+      {index < parts.length - 1 ? (
+        <>
+          /<wbr />
+        </>
+      ) : null}
+    </Fragment>
+  ));
 }
 
-function ProjectLinks({ live, name, source }: { live?: string; name: string; source?: string }) {
+function ProjectLinks({
+  live,
+  liveLabel,
+  name,
+  source,
+}: {
+  live?: string;
+  liveLabel: string;
+  name: string;
+  source?: string;
+}) {
   return (
     <div className="project-links">
       {live ? (
-        <a href={live} target="_blank" rel="noreferrer" aria-label={`View ${name} live`}>
-          Live <span aria-hidden="true">↗</span>
+        <a href={live} target="_blank" rel="noreferrer" aria-label={`${liveLabel}: ${name}`}>
+          {liveLabel} <span aria-hidden="true">↗</span>
         </a>
       ) : null}
       {source ? (
         <a href={source} target="_blank" rel="noreferrer" aria-label={`View ${name} source code`}>
-          Source <span aria-hidden="true">↗</span>
+          View source <span aria-hidden="true">↗</span>
         </a>
       ) : null}
     </div>
-  );
-}
-
-function LuxeStory() {
-  return (
-    <section
-      className="flagship-runway flagship-runway--luxe"
-      id="luxe"
-      data-flagship
-      aria-labelledby="luxe-title"
-    >
-      <div className="flagship-stage">
-        <div className="flagship-copy">
-          <div className="flagship-kicker">
-            <AppIcon alt="Luxe app icon" base="/media/luxe/icon-256" />
-            <div>
-              <p className="eyebrow">Flagship · 01</p>
-              <p className="status-label">{luxe.status}</p>
-            </div>
-          </div>
-          <h2 id="luxe-title">{luxe.name}</h2>
-          <p className="flagship-lede">{luxe.description}</p>
-          <Metrics facts={luxe.facts} />
-          <p className="flagship-detail">{luxe.detail}</p>
-          <p className="storage-note">{luxe.storage}</p>
-          <ul className="stack-list" aria-label="Technologies used">
-            {luxe.stack.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <a className="text-link" href={luxe.live} target="_blank" rel="noreferrer">
-            Open live app <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-
-        <div className="phone-stage" data-phone-stack role="group" aria-label="Luxe app screens">
-          {luxe.screens.map((screen, index) => (
-            <PhoneFrame
-              key={screen}
-              className={`phone-card phone-card--${index + 1}`}
-              alt={`Luxe resident app ${screen.slice(3).replaceAll("-", " ")} screen`}
-              base={`/media/luxe/${screen}`}
-              widths={[440, 660]}
-              sourceWidth={1320}
-              sourceHeight={2868}
-            />
-          ))}
-          <div className="stage-counter" aria-hidden="true">
-            <span data-stage-current>01</span>
-            <span>/ 05</span>
-          </div>
-        </div>
-        <div className="flagship-progress" aria-hidden="true">
-          <span />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function VictoriousMinistriesStory() {
-  return (
-    <section
-      className="flagship-runway flagship-runway--vm"
-      id="victorious-ministries"
-      data-flagship
-      aria-labelledby="victorious-ministries-title"
-    >
-      <div className="flagship-stage">
-        <div className="flagship-copy">
-          <div className="flagship-kicker">
-            <AppIcon
-              alt="Victorious Ministries app icon"
-              base="/media/victorious-ministries/icon-256"
-            />
-            <div>
-              <p className="eyebrow">Flagship · 02</p>
-              <p className="status-label">{victoriousMinistries.status}</p>
-            </div>
-          </div>
-          <h2 id="victorious-ministries-title">{victoriousMinistries.name}</h2>
-          <p className="flagship-lede">{victoriousMinistries.description}</p>
-          <Metrics facts={victoriousMinistries.facts} />
-          <p className="flagship-detail">{victoriousMinistries.detail}</p>
-          <ul className="stack-list" aria-label="Technologies used">
-            {victoriousMinistries.stack.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <a
-            className="text-link"
-            href={victoriousMinistries.live}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open landing page <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-
-        <div
-          className="phone-stage"
-          data-phone-stack
-          role="group"
-          aria-label="Victorious Ministries app screens"
-        >
-          {victoriousMinistries.screens.map((screen, index) => (
-            <PhoneFrame
-              key={screen}
-              className={`phone-card phone-card--${index + 1}`}
-              alt={`Victorious Ministries ${screen.slice(3).replaceAll("-", " ")} screen`}
-              base={`/media/victorious-ministries/${screen}`}
-              widths={[428, 642]}
-              sourceWidth={1284}
-              sourceHeight={2778}
-            />
-          ))}
-          <div className="stage-counter" aria-hidden="true">
-            <span data-stage-current>01</span>
-            <span>/ 06</span>
-          </div>
-        </div>
-        <div className="flagship-progress" aria-hidden="true">
-          <span />
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -198,9 +60,9 @@ function SecondaryWork() {
     <section className="section secondary-work" aria-labelledby="more-work-title">
       <div className="section-frame">
         <SectionHeading
-          eyebrow="More shipped work"
+          eyebrow="Selected projects"
           id="more-work-title"
-          title="Products, tools, and experiments."
+          title="A few more things I’ve built."
         />
         <div className="project-list">
           {projects.map((project) => (
@@ -219,6 +81,7 @@ function SecondaryWork() {
                 {"subline" in project ? <p className="project-subline">{project.subline}</p> : null}
                 <ProjectLinks
                   live={"live" in project ? project.live : undefined}
+                  liveLabel={project.liveLabel}
                   name={project.name}
                   source={"source" in project ? project.source : undefined}
                 />
@@ -240,8 +103,8 @@ function SecondaryWork() {
                     alt="Warewise workflow automation interface"
                     base="/media/projects/warewise"
                     widths={[720, 1440]}
-                    width={3352}
-                    height={2052}
+                    width={3400}
+                    height={1958}
                     sizes="(min-width: 900px) 38vw, 100vw"
                   />
                 ) : null}
@@ -261,7 +124,7 @@ function Experience() {
         <SectionHeading
           eyebrow="Experience"
           id="experience-title"
-          title="Building systems end to end."
+          title="From product surfaces to infrastructure."
         />
         <div className="experience-ledger">
           {experience.map((item) => (
@@ -276,11 +139,22 @@ function Experience() {
                 </h3>
                 <p>{item.highlights[0]}</p>
                 {item.highlights.length > 1 ? (
-                  <details>
-                    <summary>More scope</summary>
-                    <ul>
-                      {item.highlights.slice(1).map((highlight) => (
-                        <li key={highlight}>{highlight}</li>
+                  <details className="experience-details">
+                    <summary>
+                      <span>Additional scope</span>
+                      <span className="experience-summary-meta">
+                        <span>{item.highlights.length - 1} details</span>
+                        <span className="experience-summary-icon" aria-hidden="true" />
+                      </span>
+                    </summary>
+                    <ul className="experience-detail-list">
+                      {item.highlights.slice(1).map((highlight, index) => (
+                        <li key={highlight}>
+                          <span className="experience-detail-index" aria-hidden="true">
+                            {String(index + 2).padStart(2, "0")}
+                          </span>
+                          <span>{highlight}</span>
+                        </li>
                       ))}
                     </ul>
                   </details>
@@ -300,8 +174,12 @@ function Experience() {
             </div>
           </article>
         </div>
-        <a className="resume-link text-link" href="/resume.pdf" download>
-          Download résumé <span aria-hidden="true">↓</span>
+        <a
+          className="resume-link text-link"
+          href="/Reuel-Nixon-Resume.pdf"
+          download="Reuel-Nixon-Resume.pdf"
+        >
+          Download Reuel Nixon’s résumé <span aria-hidden="true">↓</span>
         </a>
       </div>
     </section>
@@ -312,12 +190,23 @@ function Skills() {
   return (
     <section className="section skills" id="skills" aria-labelledby="skills-title">
       <div className="section-frame">
-        <SectionHeading eyebrow="Skills" id="skills-title" title="What I build with." />
+        <SectionHeading eyebrow="Skills" id="skills-title" title="The stack behind the work." />
         <div className="skills-ledger">
           {skills.map(([category, items]) => (
             <div className="skills-row" key={category}>
               <h3>{category}</h3>
-              <p>{items.join(" · ")}</p>
+              <ul className="skills-list" aria-label={`${category} skills`}>
+                {items.map((item, index) => (
+                  <li key={item}>
+                    <span className="skill-number" aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span>
+                      <SkillLabel value={item} />
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -344,12 +233,11 @@ function Contact() {
           <span>{identity.tagline[1]}</span>
           <span className="accent-text">{identity.tagline[2]}</span>
         </h2>
-        <p className="contact-lede">{identity.positioning}</p>
         <CopyEmail email={identity.email} />
         <div className="contact-actions">
           <MagneticLink href={identity.links.schedule}>Schedule a call ↗</MagneticLink>
           <a className="button button--ghost" href={`mailto:${identity.email}`}>
-            Open email
+            Email me
           </a>
         </div>
       </div>
@@ -362,26 +250,60 @@ export function App() {
 
   useEffect(() => {
     const motionAllowed = window.matchMedia(
-      "(min-width: 900px) and (min-height: 705px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+      "(min-width: 900px) and (min-height: 801px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
     );
-    if (!motionAllowed.matches) return;
-
     let cleanup: (() => void) | undefined;
     let disposed = false;
-    const start = () => {
-      void import("./motion").then(({ initializeMotion }) => {
-        if (disposed || !appRef.current) return;
-        cleanup = initializeMotion(appRef.current);
-      });
+    let loading = false;
+    let idleCallback: number | undefined;
+    let timeout: number | undefined;
+
+    const cancelScheduled = () => {
+      if (idleCallback !== undefined) window.cancelIdleCallback?.(idleCallback);
+      if (timeout !== undefined) window.clearTimeout(timeout);
+      idleCallback = undefined;
+      timeout = undefined;
     };
 
-    const idleCallback = window.requestIdleCallback?.(start, { timeout: 1_200 });
-    const timeout = idleCallback === undefined ? window.setTimeout(start, 300) : undefined;
+    const start = () => {
+      cancelScheduled();
+      if (disposed || loading || cleanup || !motionAllowed.matches) return;
+      loading = true;
+      void import("./motion")
+        .then(({ initializeMotion }) => {
+          if (disposed || !motionAllowed.matches || !appRef.current) return;
+          cleanup = initializeMotion(appRef.current);
+        })
+        .finally(() => {
+          loading = false;
+        });
+    };
+
+    const schedule = () => {
+      cancelScheduled();
+      if (disposed || cleanup || loading || !motionAllowed.matches) return;
+      idleCallback = window.requestIdleCallback?.(start, { timeout: 1_200 });
+      if (idleCallback === undefined) timeout = window.setTimeout(start, 300);
+    };
+
+    const syncMotion = () => {
+      if (motionAllowed.matches) {
+        schedule();
+        return;
+      }
+
+      cancelScheduled();
+      cleanup?.();
+      cleanup = undefined;
+    };
+
+    motionAllowed.addEventListener("change", syncMotion);
+    syncMotion();
 
     return () => {
       disposed = true;
-      if (idleCallback !== undefined) window.cancelIdleCallback?.(idleCallback);
-      if (timeout !== undefined) window.clearTimeout(timeout);
+      motionAllowed.removeEventListener("change", syncMotion);
+      cancelScheduled();
       cleanup?.();
     };
   }, []);
@@ -413,35 +335,25 @@ export function App() {
 
       <main id="main-content" tabIndex={-1}>
         <section className="hero" id="top" aria-labelledby="hero-title">
-          <SignalField />
+          <ProjectAperture />
           <div className="hero-grid" aria-hidden="true" />
           <div className="hero-content">
-            <div className="hero-intro">
-              <p>{identity.role}</p>
-              <p>{identity.location}</p>
+            <div className="hero-title-group">
+              <div className="hero-intro">
+                <p>{identity.role}</p>
+                <p>{identity.location}</p>
+              </div>
+              <h1 id="hero-title" aria-label={identity.name}>
+                <span className="hero-line">
+                  <span>REUEL</span>
+                </span>
+                <span className="hero-line hero-line--offset">
+                  <span>NIXON</span>
+                </span>
+              </h1>
             </div>
-            <h1 id="hero-title" aria-label={identity.name}>
-              <span className="hero-line">
-                <span>REUEL</span>
-              </span>
-              <span className="hero-line hero-line--offset">
-                <span>NIXON</span>
-              </span>
-            </h1>
             <div className="hero-footer">
-              <p>{identity.positioning}</p>
-              <figure className="portrait-card">
-                <ResponsivePicture
-                  alt="Portrait of Reuel Nixon"
-                  base="/media/avatar/avatar"
-                  widths={[320, 640]}
-                  width={1696}
-                  height={1696}
-                  sizes="(min-width: 900px) 11vw, 28vw"
-                  loading="eager"
-                />
-                <figcaption>Reuel Nixon</figcaption>
-              </figure>
+              <p>{identity.heroPositioning}</p>
               <a className="scroll-cue" href="#work">
                 Selected work <span aria-hidden="true">↓</span>
               </a>
@@ -462,7 +374,7 @@ export function App() {
       <footer className="site-footer">
         <div className="footer-identity">
           <span>© {new Date().getFullYear()} Reuel Nixon</span>
-          <a href="/resume.pdf" download>
+          <a href="/Reuel-Nixon-Resume.pdf" download="Reuel-Nixon-Resume.pdf">
             Résumé ↓
           </a>
         </div>
@@ -482,7 +394,6 @@ export function App() {
         </nav>
         <a href="#top">Back to top ↑</a>
       </footer>
-      <Analytics />
     </div>
   );
 }

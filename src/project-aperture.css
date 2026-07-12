@@ -1,0 +1,290 @@
+.project-aperture {
+  --aperture-x: 61%;
+  --aperture-y: 39%;
+  --aperture-radius: clamp(7.5rem, 14vw, 14rem);
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  animation: project-aperture-arrive 420ms ease-out both;
+}
+
+.project-aperture__plane {
+  position: absolute;
+  top: clamp(5rem, 11vh, 8.5rem);
+  right: clamp(-7rem, -4vw, -2rem);
+  bottom: clamp(1.5rem, 5vh, 4rem);
+  width: min(61vw, 58rem);
+  overflow: hidden;
+  border: 1px solid rgb(228 235 218 / 16%);
+  background: #0b0c0a;
+  box-shadow: 0 2rem 8rem rgb(0 0 0 / 40%);
+  clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
+  animation: project-aperture-open 1.06s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.project-aperture__plane::before,
+.project-aperture__plane::after {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  content: "";
+}
+
+.project-aperture__plane::before {
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(216 255 62 / 10%) 1px, transparent 1px),
+    linear-gradient(rgb(228 235 218 / 8%) 1px, transparent 1px);
+  background-size: clamp(3.2rem, 5vw, 5.4rem) clamp(3.2rem, 5vw, 5.4rem);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 48%, #000 100%);
+  opacity: 0.56;
+}
+
+.project-aperture__plane::after {
+  inset: 0;
+  background:
+    linear-gradient(90deg, #0b0c0a 0%, transparent 28%, transparent 80%, #0b0c0a 100%),
+    linear-gradient(180deg, #0b0c0a 0%, transparent 22%, transparent 70%, #0b0c0a 100%);
+}
+
+.project-aperture__portrait,
+.project-aperture__portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.project-aperture__portrait img {
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+.project-aperture__portrait--base {
+  opacity: 0.36;
+  filter: grayscale(1) contrast(1.35) brightness(0.54);
+  animation: project-aperture-resolve 1.02s steps(8, end) both;
+}
+
+.project-aperture__portrait--signal {
+  z-index: 1;
+  filter: saturate(0.76) contrast(1.16);
+  opacity: 0.94;
+  mask-image: radial-gradient(
+    circle var(--aperture-radius) at var(--aperture-x) var(--aperture-y),
+    #000 0%,
+    #000 54%,
+    rgb(0 0 0 / 86%) 65%,
+    transparent 100%
+  );
+}
+
+.project-aperture__portrait--signal::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgb(216 255 62 / 28%), transparent 45%);
+  mix-blend-mode: color;
+  content: "";
+}
+
+.project-aperture__dither {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background-image: radial-gradient(circle, #d8ff3e 0 0.75px, transparent 0.9px);
+  background-size: 5px 5px;
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(
+    circle calc(var(--aperture-radius) * 1.2) at var(--aperture-x) var(--aperture-y),
+    transparent 0%,
+    transparent 50%,
+    #000 70%,
+    transparent 100%
+  );
+  animation: project-aperture-dither 1.06s steps(7, end) both;
+}
+
+.project-aperture__scan {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: #d8ff3e;
+  box-shadow:
+    0 0 1.3rem rgb(216 255 62 / 72%),
+    -1.6rem 0 3.6rem rgb(216 255 62 / 24%);
+  animation: project-aperture-scan 920ms cubic-bezier(0.32, 0, 0.25, 1) 80ms both;
+}
+
+.project-aperture__lens {
+  position: absolute;
+  z-index: 6;
+  top: var(--aperture-y);
+  left: var(--aperture-x);
+  width: calc(var(--aperture-radius) * 1.7);
+  aspect-ratio: 1;
+  border: 1px solid rgb(216 255 62 / 38%);
+  border-radius: 50%;
+  opacity: 0.58;
+  transform: translate(-50%, -50%);
+  transition: opacity 180ms ease;
+}
+
+.project-aperture__lens::before,
+.project-aperture__lens::after {
+  position: absolute;
+  background: #d8ff3e;
+  content: "";
+}
+
+.project-aperture__lens::before {
+  top: 50%;
+  right: -0.3rem;
+  left: -0.3rem;
+  height: 1px;
+  opacity: 0.34;
+}
+
+.project-aperture__lens::after {
+  top: -0.3rem;
+  bottom: -0.3rem;
+  left: 50%;
+  width: 1px;
+  opacity: 0.34;
+}
+
+.project-aperture[data-engaged="true"] .project-aperture__lens {
+  opacity: 0.94;
+}
+
+@keyframes project-aperture-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes project-aperture-open {
+  0% {
+    clip-path: polygon(50% 48%, 50% 48%, 50% 52%, 50% 52%, 50% 52%, 50% 48%);
+    transform: scaleX(0.78);
+  }
+  52% {
+    clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
+    transform: scaleX(1);
+  }
+  64% {
+    clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
+    transform: translateX(0.8%);
+  }
+  100% {
+    clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
+    transform: translateX(0);
+  }
+}
+
+@keyframes project-aperture-resolve {
+  0% {
+    opacity: 0;
+    filter: grayscale(1) contrast(2.4) brightness(0.25);
+    transform: scale(1.06) translateX(3%);
+  }
+  42% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0.36;
+    filter: grayscale(1) contrast(1.35) brightness(0.54);
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes project-aperture-dither {
+  0%,
+  18% {
+    background-size: 13px 13px;
+    opacity: 0.9;
+  }
+  58% {
+    background-size: 7px 7px;
+    opacity: 0.5;
+  }
+  100% {
+    background-size: 5px 5px;
+    opacity: 0.34;
+  }
+}
+
+@keyframes project-aperture-scan {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  8% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(min(61vw, 58rem));
+  }
+}
+
+@media (max-width: 899px) {
+  .project-aperture {
+    --aperture-x: 61%;
+    --aperture-y: 39%;
+    --aperture-radius: clamp(6rem, 30vw, 10rem);
+  }
+
+  .project-aperture__plane {
+    top: clamp(17rem, 66vw, 25rem);
+    right: var(--gutter);
+    bottom: auto;
+    left: var(--gutter);
+    width: auto;
+    max-width: 32rem;
+    margin-inline: auto;
+    aspect-ratio: 1;
+    opacity: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .project-aperture,
+  .project-aperture__plane,
+  .project-aperture__portrait--base,
+  .project-aperture__dither,
+  .project-aperture__scan {
+    animation: none;
+  }
+
+  .project-aperture__scan,
+  .project-aperture__lens {
+    display: none;
+  }
+
+  .project-aperture__portrait--signal {
+    mask-image: linear-gradient(
+      112deg,
+      rgb(0 0 0 / 72%) 0%,
+      #000 34%,
+      #000 78%,
+      rgb(0 0 0 / 72%) 100%
+    );
+  }
+
+  .project-aperture__dither {
+    mask-image: linear-gradient(90deg, transparent 18%, #000 64%, transparent 96%);
+  }
+}

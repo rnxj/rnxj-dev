@@ -9,29 +9,27 @@ export function initializeMotion(root: HTMLElement) {
   const media = gsap.matchMedia();
 
   media.add("(prefers-reduced-motion: no-preference)", () => {
-    root.classList.add("motion-ready");
-
     let alive = true;
     const tweens: gsap.core.Tween[] = [];
     const triggers: ScrollTrigger[] = [];
     const activeSplits = new Set<SplitText>();
+    const preparedElements = new Set<HTMLElement>();
+    const isUnseen = (element: HTMLElement) =>
+      element.getBoundingClientRect().top >= window.innerHeight;
     const revealElements = gsap.utils.toArray<HTMLElement>("[data-reveal]", root);
     const revealObserver = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           const element = entry.target as HTMLElement;
-          const tween = gsap.fromTo(
-            element,
-            { y: 22, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: "power4.out",
-              clearProps: "transform,opacity",
-            },
-          );
+          const tween = gsap.to(element, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power4.out",
+            clearProps: "transform,opacity",
+            onComplete: () => preparedElements.delete(element),
+          });
           tweens.push(tween);
           revealObserver.unobserve(element);
         }
@@ -39,16 +37,25 @@ export function initializeMotion(root: HTMLElement) {
       { rootMargin: "0px 0px 10% 0px", threshold: 0.01 },
     );
 
-    revealElements.forEach((element) => revealObserver.observe(element));
+    revealElements.forEach((element) => {
+      if (!isUnseen(element)) return;
+      gsap.set(element, { y: 22, opacity: 0 });
+      preparedElements.add(element);
+      revealObserver.observe(element);
+    });
 
     void document.fonts.ready.then(() => {
       if (!alive) return;
       const headings = gsap.utils.toArray<HTMLElement>(
-        ".flagship-copy > h2, .section-heading > h2",
+        ".fs-copy > h2, .section-heading > h2",
         root,
       );
 
       headings.forEach((heading) => {
+        if (!isUnseen(heading)) return;
+        gsap.set(heading, { opacity: 0 });
+        preparedElements.add(heading);
+
         const trigger = ScrollTrigger.create({
           trigger: heading,
           start: "top 88%",
@@ -63,14 +70,18 @@ export function initializeMotion(root: HTMLElement) {
               aria: "auto",
             });
             activeSplits.add(split);
-            const tween = gsap.from(split.words, {
-              yPercent: 105,
+            gsap.set(split.words, { yPercent: 105 });
+            gsap.set(heading, { opacity: 1 });
+            const tween = gsap.to(split.words, {
+              yPercent: 0,
               duration: 0.85,
               stagger: 0.055,
               ease: "power4.out",
               onComplete: () => {
                 split.revert();
                 activeSplits.delete(split);
+                gsap.set(heading, { clearProps: "opacity" });
+                preparedElements.delete(heading);
               },
             });
             tweens.push(tween);
@@ -89,12 +100,15 @@ export function initializeMotion(root: HTMLElement) {
       triggers.forEach((trigger) => trigger.kill());
       activeSplits.forEach((split) => split.revert());
       activeSplits.clear();
-      root.classList.remove("motion-ready");
+      preparedElements.forEach((element) => {
+        gsap.set(element, { clearProps: "transform,opacity" });
+      });
+      preparedElements.clear();
     };
   });
 
   media.add(
-    "(min-width: 900px) and (min-height: 705px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+    "(min-width: 900px) and (min-height: 801px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
     () => {
       const lenis = new Lenis({
         duration: 1.05,
@@ -109,83 +123,68 @@ export function initializeMotion(root: HTMLElement) {
       gsap.ticker.add(raf);
       gsap.ticker.lagSmoothing(0);
 
-      const timelines: gsap.core.Timeline[] = [];
-      root.querySelectorAll<HTMLElement>("[data-flagship]").forEach((stage) => {
-        const cards = Array.from(stage.querySelectorAll<HTMLElement>(".phone-card"));
-        const progress = stage.querySelector<HTMLElement>(".flagship-progress span");
-        const current = stage.querySelector<HTMLElement>("[data-stage-current]");
-        if (cards.length === 0) return;
+      const storyTriggers: ScrollTrigger[] = [];
+      const navigationCleanups: Array<() => void> = [];
+      root.querySelectorAll<HTMLElement>("[data-flagship-story]").forEach((story) => {
+        const track = story.querySelector<HTMLElement>("[data-story-track]");
+        const progressBar = story.querySelector<HTMLElement>("[data-story-progress]");
+        const progressShell = progressBar?.parentElement;
+        const chapterCount = story.querySelectorAll("[data-story-screen]").length;
+        if (!track || chapterCount === 0) return;
 
-        cards.forEach((card, index) => {
-          gsap.set(card, {
-            xPercent: index * 17,
-            yPercent: index * 1.7,
-            rotation: index * 3,
-            scale: 1 - index * 0.025,
-            opacity: Math.max(0.34, 1 - index * 0.13),
-            zIndex: cards.length - index,
+        if (progressBar) progressBar.style.transform = "scaleX(0)";
+
+        const activate = (index: number) => {
+          if (Number(story.dataset.activeIndex) === index) return;
+          story.dispatchEvent(
+            new CustomEvent("flagship:activate", {
+              detail: { index },
+            }),
+          );
+        };
+
+        const navigate = (event: Event) => {
+          const { detail } = event as CustomEvent<{ index?: number }>;
+          if (typeof detail?.index !== "number") return;
+          const index = Math.min(chapterCount - 1, Math.max(0, detail.index));
+          const trackTop = window.scrollY + track.getBoundingClientRect().top;
+          const scrollRange = Math.max(0, track.offsetHeight - window.innerHeight);
+          const chapterCenter = (index + 0.5) / chapterCount;
+          lenis.scrollTo(trackTop + scrollRange * chapterCenter, {
+            duration: 0.72,
           });
-        });
+        };
 
-        const setProgress = progress ? gsap.quickSetter(progress, "scaleX") : undefined;
-        let lastActive = 1;
-        const timeline = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: stage,
+        story.addEventListener("flagship:navigate", navigate);
+        navigationCleanups.push(() => story.removeEventListener("flagship:navigate", navigate));
+
+        storyTriggers.push(
+          ScrollTrigger.create({
+            trigger: track,
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.3,
             invalidateOnRefresh: true,
+            onToggle: (self) => {
+              if (progressShell) progressShell.style.opacity = self.isActive ? "1" : "0";
+            },
             onUpdate: (self) => {
-              setProgress?.(self.progress);
-              const active = Math.min(cards.length, Math.floor(self.progress * cards.length) + 1);
-              if (current && active !== lastActive) {
-                current.textContent = String(active).padStart(2, "0");
-                lastActive = active;
-              }
+              if (progressBar) progressBar.style.transform = `scaleX(${self.progress})`;
+              const nextIndex = Math.min(
+                chapterCount - 1,
+                Math.floor(self.progress * chapterCount),
+              );
+              activate(nextIndex);
             },
-          },
-        });
-
-        cards.forEach((card, index) => {
-          if (index === 0) return;
-          const position = index / cards.length;
-          timeline.to(
-            cards[index - 1],
-            {
-              xPercent: -72,
-              yPercent: -3,
-              rotation: -7,
-              scale: 0.84,
-              opacity: 0.14,
-              zIndex: index,
-              duration: 0.16,
-            },
-            position,
-          );
-          timeline.to(
-            card,
-            {
-              xPercent: 0,
-              yPercent: 0,
-              rotation: 0,
-              scale: 1,
-              opacity: 1,
-              zIndex: cards.length + 1,
-              duration: 0.18,
-            },
-            position,
-          );
-        });
-
-        timelines.push(timeline);
+          }),
+        );
       });
 
       return () => {
-        timelines.forEach((timeline) => {
-          timeline.scrollTrigger?.kill();
-          timeline.kill();
+        navigationCleanups.forEach((cleanup) => cleanup());
+        storyTriggers.forEach((trigger) => trigger.kill());
+        root.querySelectorAll<HTMLElement>("[data-story-progress]").forEach((progressBar) => {
+          progressBar.style.removeProperty("transform");
+          progressBar.parentElement?.style.removeProperty("opacity");
         });
         gsap.ticker.remove(raf);
         gsap.ticker.lagSmoothing(500, 33);

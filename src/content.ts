@@ -4,6 +4,9 @@ export const identity = {
   location: "Chennai, India",
   positioning:
     "Full-stack product engineer who moves quickly from idea to working software. I like owning features end-to-end, building clean product experiences, and using AI as leverage to iterate faster without skipping the engineering.",
+  heroPositioning:
+    "I move quickly from idea to working software. I own features end to end, build clean product experiences, and use AI as leverage without skipping the engineering.",
+  bio: "Full-stack engineer building SaaS, tools, and fast experiments with AI as leverage.",
   tagline: ["Build fast.", "Understand deeply.", "Keep shipping."],
   email: "reuelnixon@gmail.com",
   links: {
@@ -19,7 +22,7 @@ export const luxe = {
   name: "Luxe PMS",
   description:
     "Property-management suite for residential communities — staff web portal + resident mobile app.",
-  status: "Live · Invite-only",
+  status: "Live admin portal · Resident app not yet released",
   live: "https://luxe-app.hangar.rnxj.dev",
   facts: [
     ["48", "Postgres tables"],
@@ -27,8 +30,8 @@ export const luxe = {
     ["35", "native screens"],
   ],
   detail:
-    "The Luxe Assistant uses 9 tools and delegates write actions through the same RBAC, validation, and transactions as the UI. Realtime conversations use SSE with an ownership-check security contract.",
-  storage: "S3-compatible object storage (RustFS in production)",
+    "The Luxe Assistant uses 9 tools. Every write action runs through the same RBAC, validation, and transactions as the UI. Real-time conversations stream over SSE with an ownership check.",
+  storage: "Private S3-compatible object storage · RustFS in production",
   stack: ["Bun", "TypeScript", "Expo", "Hono", "tRPC", "PostgreSQL"],
   screens: ["01-home", "02-packages", "03-amenities", "04-community", "05-maintenance"],
 } as const;
@@ -37,15 +40,15 @@ export const victoriousMinistries = {
   name: "Victorious Ministries",
   description:
     "Bilingual church app for a Tamil ministry — scripture that speaks, even when the app is closed.",
-  status: "In store-submission pipeline",
+  status: "Coming soon · Store submission configured",
   live: "https://victoriousministries.hangar.rnxj.dev",
   facts: [
-    ["31", "owner-verified clips"],
+    ["31", "owner-verified Tamil clips"],
     ["0", "background JS"],
     ["5", "magazine languages"],
   ],
   detail:
-    "Tamil Bible-verse audio clips play as the notification sound, so the OS can play them even when the app is killed. The UI and notifications share the same rotation logic so they never disagree.",
+    "Thirty-one owner-verified Tamil Bible verses play as notification sounds, even with the app killed and zero background JavaScript. The app and its notifications share the same rotation logic, so every verse stays in sync.",
   stack: ["Expo", "React Native", "TypeScript", "React Compiler", "content.json"],
   screens: [
     "01-verses",
@@ -65,6 +68,7 @@ export const projects = [
     subline: "No controller needed. Just your webcam and a pinch.",
     stack: ["Vanilla TypeScript", "PixiJS v8", "MediaPipe", "Web Audio API"],
     live: "https://duckhunt.rnxj.dev",
+    liveLabel: "Play the game",
     source: "https://github.com/rnxj/duckhunt-unplugged",
     media: "video",
   },
@@ -72,8 +76,10 @@ export const projects = [
     index: "04",
     name: "PhonePe Payment Gateway for Next.js",
     description:
-      "Payment initiation, status verification, webhook callbacks, result pages, and sandbox/production configuration with the official PhonePe Node SDK.",
+      "A Next.js 15 integration for PhonePe Standard Checkout with the official Node SDK: payment initiation, status verification, webhook callbacks, result pages, paisa handling, and sandbox/production configuration.",
     stack: ["Next.js 15", "PhonePe Node SDK", "Standard Checkout"],
+    live: "https://phonepe-nextjs-demo.rnxj.dev/",
+    liveLabel: "Open demo",
     source: "https://github.com/rnxj/phonepe-pg-nextjs",
     media: "phonepe",
   },
@@ -81,9 +87,10 @@ export const projects = [
     index: "05",
     name: "Warewise",
     description:
-      "Workflow automation for a furniture-sector client — reducing manual operations, tracking operational state, and improving process visibility.",
+      "Workflow automation for a furniture-sector client, built to reduce manual operations, track operational state, and improve process visibility.",
     stack: ["TanStack Start", "Cloudflare Workers"],
     live: "https://j-one.app",
+    liveLabel: "Visit live site",
     media: "warewise",
   },
 ] as const;
@@ -108,7 +115,7 @@ export const experience = [
     dates: "Nov 2023–Oct 2024",
     location: "Remote",
     highlights: [
-      "Copilot chatbot frontend in Next.js for identity/entitlement/access-review data; Go APIs; Python data workflows; CI/CD with Docker, Serverless Framework, GitHub Actions, ArgoCD, AWS.",
+      "Built a Next.js Copilot chatbot for identity, entitlement, and access-review data, backed by Go APIs and Python workflows, with CI/CD across Docker, Serverless Framework, GitHub Actions, ArgoCD, and AWS.",
     ],
   },
   {
@@ -117,7 +124,7 @@ export const experience = [
     dates: "Aug–Sep 2023",
     location: "Chennai",
     highlights: [
-      "ML-assisted dummy-data generation for API testing fields; integrated into the Dokimes testing workflow.",
+      "Built ML-assisted dummy-data generation for API testing fields and integrated it into the Dokimes testing workflow.",
     ],
   },
 ] as const;
