@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -7,8 +7,12 @@
     <meta name="color-scheme" content="dark" />
     <meta name="author" content="Reuel Nixon" />
     <meta
+      name="robots"
+      content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+    />
+    <meta
       name="description"
-      content="Reuel Nixon is a full-stack product engineer in Chennai, building SaaS, tools, and fast experiments with AI as leverage."
+      content="Reuel Nixon is a full-stack product engineer in Chennai, India, building web, mobile, SaaS, and AI-powered products. Available for work and freelance projects."
     />
     <link rel="canonical" href="https://rnxj.dev/" />
     <link
@@ -20,13 +24,20 @@
     />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="profile" />
-    <meta property="og:site_name" content="rnxj.dev" />
-    <meta property="og:title" content="Reuel Nixon — Full-stack product engineer" />
-    <meta property="og:description" content="Build fast. Understand deeply. Keep shipping." />
+    <meta property="og:site_name" content="Reuel Nixon" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="profile:first_name" content="Reuel" />
+    <meta property="profile:last_name" content="Nixon" />
+    <meta property="og:title" content="Reuel Nixon — Full-Stack Product Engineer" />
+    <meta
+      property="og:description"
+      content="Reuel Nixon is a full-stack product engineer in Chennai, India, building web, mobile, SaaS, and AI-powered products. Available for work and freelance projects."
+    />
     <meta property="og:url" content="https://rnxj.dev/" />
     <meta property="og:image" content="https://rnxj.dev/og.png" />
     <meta property="og:image:width" content="1200" />
@@ -35,56 +46,95 @@
     <meta property="og:image:alt" content="Reuel Nixon, full-stack product engineer — rnxj.dev" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@_rnxj" />
     <meta name="twitter:creator" content="@_rnxj" />
-    <meta name="twitter:title" content="Reuel Nixon — Full-stack product engineer" />
-    <meta name="twitter:description" content="Build fast. Understand deeply. Keep shipping." />
+    <meta name="twitter:title" content="Reuel Nixon — Full-Stack Product Engineer" />
+    <meta
+      name="twitter:description"
+      content="Reuel Nixon is a full-stack product engineer in Chennai, India, building web, mobile, SaaS, and AI-powered products. Available for work and freelance projects."
+    />
     <meta name="twitter:image" content="https://rnxj.dev/og.png" />
     <meta name="twitter:image:alt" content="Reuel Nixon, full-stack product engineer — rnxj.dev" />
 
-    <script type="application/ld+json">
+    <script id="structured-data" type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "@id": "https://rnxj.dev/#reuel-nixon",
-        "name": "Reuel Nixon",
-        "url": "https://rnxj.dev",
-        "image": "https://rnxj.dev/media/avatar/portrait-signal-1254.webp",
-        "email": "mailto:reuelnixon@gmail.com",
-        "jobTitle": "Full-stack product engineer",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Chennai",
-          "addressCountry": "India"
-        },
-        "worksFor": {
-          "@type": "Organization",
-          "name": "Keygraph"
-        },
-        "alumniOf": {
-          "@type": "CollegeOrUniversity",
-          "name": "VIT Chennai"
-        },
-        "knowsAbout": [
-          "TypeScript",
-          "JavaScript",
-          "Go",
-          "Python",
-          "React",
-          "Next.js",
-          "Hono",
-          "PostgreSQL",
-          "AWS",
-          "Cloudflare"
-        ],
-        "sameAs": [
-          "https://github.com/rnxj",
-          "https://linkedin.com/in/reuelnixon",
-          "https://x.com/_rnxj",
-          "https://instagram.com/_rnxj"
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://rnxj.dev/#website",
+            "url": "https://rnxj.dev/",
+            "name": "Reuel Nixon",
+            "alternateName": "RNXJ",
+            "inLanguage": "en-IN"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://rnxj.dev/#profile-image",
+            "contentUrl": "https://rnxj.dev/media/avatar/portrait-signal-1254.webp",
+            "width": 1254,
+            "height": 1254,
+            "caption": "Stylized portrait of Reuel Nixon"
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://rnxj.dev/#profile-page",
+            "url": "https://rnxj.dev/",
+            "name": "Reuel Nixon — Full-Stack Product Engineer",
+            "description": "Reuel Nixon is a full-stack product engineer in Chennai, India, building web, mobile, SaaS, and AI-powered products. Available for work and freelance projects.",
+            "inLanguage": "en-IN",
+            "isPartOf": { "@id": "https://rnxj.dev/#website" },
+            "mainEntity": { "@id": "https://rnxj.dev/#person" },
+            "primaryImageOfPage": { "@id": "https://rnxj.dev/#profile-image" },
+            "hasPart": [
+              { "@id": "https://rnxj.dev/work/luxe-pms/#case-study" },
+              { "@id": "https://rnxj.dev/work/victorious-ministries/#case-study" },
+              { "@id": "https://rnxj.dev/work/duck-hunt-unplugged/#case-study" },
+              { "@id": "https://rnxj.dev/work/phonepe-nextjs/#case-study" }
+            ]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://rnxj.dev/#person",
+            "name": "Reuel Nixon",
+            "givenName": "Reuel",
+            "familyName": "Nixon",
+            "url": "https://rnxj.dev/",
+            "image": { "@id": "https://rnxj.dev/#profile-image" },
+            "email": "reuelnixon@gmail.com",
+            "jobTitle": "Full-stack product engineer",
+            "description": "Full-stack product engineer who moves quickly from idea to working software, owns features end-to-end, and builds clean product experiences.",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Chennai",
+              "addressCountry": "IN"
+            },
+            "worksFor": { "@type": "Organization", "name": "Keygraph" },
+            "alumniOf": { "@type": "CollegeOrUniversity", "name": "VIT Chennai" },
+            "knowsAbout": [
+              "TypeScript",
+              "JavaScript",
+              "Go",
+              "Python",
+              "React",
+              "Next.js",
+              "React Native",
+              "Hono",
+              "PostgreSQL",
+              "AWS",
+              "Cloudflare"
+            ],
+            "sameAs": [
+              "https://github.com/rnxj",
+              "https://linkedin.com/in/reuelnixon",
+              "https://x.com/_rnxj",
+              "https://instagram.com/_rnxj"
+            ]
+          }
         ]
       }
     </script>
-    <title>Reuel Nixon — Full-stack product engineer</title>
+    <title>Reuel Nixon — Full-Stack Product Engineer</title>
   </head>
   <body>
     <div id="root"></div>

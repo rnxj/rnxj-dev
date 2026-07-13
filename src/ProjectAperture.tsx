@@ -3,34 +3,43 @@ import "./project-aperture.css";
 
 const portraitBase = "/media/avatar/portrait-signal";
 
-function AperturePortrait({ className }: { className: string }) {
+function AperturePortrait({
+  alt,
+  className,
+  priority = false,
+}: {
+  alt: string;
+  className: string;
+  priority?: boolean;
+}) {
   return (
-    <picture className={className}>
+    <picture className={className} aria-hidden={alt ? undefined : true}>
       <source
         type="image/avif"
         srcSet={`${portraitBase}-720.avif 720w, ${portraitBase}-1254.avif 1254w`}
-        sizes="(min-width: 900px) 56vw, 100vw"
+        sizes="(min-width: 900px) 56vw, calc(100vw - 2.5rem)"
       />
       <source
         type="image/webp"
         srcSet={`${portraitBase}-720.webp 720w, ${portraitBase}-1254.webp 1254w`}
-        sizes="(min-width: 900px) 56vw, 100vw"
+        sizes="(min-width: 900px) 56vw, calc(100vw - 2.5rem)"
       />
       <img
         src={`${portraitBase}-720.webp`}
-        alt=""
+        alt={alt}
         width="1254"
         height="1254"
         loading="eager"
-        decoding="async"
+        decoding={priority ? "sync" : "async"}
+        fetchPriority={priority ? "high" : "auto"}
       />
     </picture>
   );
 }
 
 /**
- * Decorative hero artwork. Keep the hero's real heading and supporting copy
- * outside this component so the experience remains complete without the image.
+ * Layered hero artwork. One image carries the portrait's accessible identity;
+ * the signal duplicate and effects remain decorative.
  */
 export function ProjectAperture() {
   const apertureRef = useRef<HTMLDivElement>(null);
@@ -94,13 +103,20 @@ export function ProjectAperture() {
   }, []);
 
   return (
-    <div ref={apertureRef} className="project-aperture" aria-hidden="true">
+    <div ref={apertureRef} className="project-aperture">
       <div ref={planeRef} className="project-aperture__plane">
-        <AperturePortrait className="project-aperture__portrait project-aperture__portrait--base" />
-        <AperturePortrait className="project-aperture__portrait project-aperture__portrait--signal" />
-        <span className="project-aperture__dither" />
-        <span className="project-aperture__scan" />
-        <span className="project-aperture__lens" />
+        <AperturePortrait
+          alt="Stylized portrait of Reuel Nixon"
+          className="project-aperture__portrait project-aperture__portrait--base"
+          priority
+        />
+        <AperturePortrait
+          alt=""
+          className="project-aperture__portrait project-aperture__portrait--signal"
+        />
+        <span className="project-aperture__dither" aria-hidden="true" />
+        <span className="project-aperture__scan" aria-hidden="true" />
+        <span className="project-aperture__lens" aria-hidden="true" />
       </div>
     </div>
   );

@@ -70,6 +70,7 @@ export const projects = [
     live: "https://duckhunt.rnxj.dev",
     liveLabel: "Play the game",
     source: "https://github.com/rnxj/duckhunt-unplugged",
+    caseStudy: "/work/duck-hunt-unplugged/",
     media: "video",
   },
   {
@@ -81,6 +82,7 @@ export const projects = [
     live: "https://phonepe-nextjs-demo.rnxj.dev/",
     liveLabel: "Open demo",
     source: "https://github.com/rnxj/phonepe-pg-nextjs",
+    caseStudy: "/work/phonepe-nextjs/",
     media: "phonepe",
   },
   {

@@ -10,6 +10,8 @@
     "preview:cloudflare": "bun run build && wrangler dev",
     "deploy:dry-run": "bun run build && wrangler deploy --dry-run",
     "deploy": "bun run build && wrangler deploy",
+    "check:seo": "bun run build && bun run scripts/check-seo.ts",
+    "indexnow": "bun run scripts/indexnow.ts",
     "lint": "oxlint",
     "format": "oxfmt --write .",
     "check": "oxlint && oxfmt --write .",

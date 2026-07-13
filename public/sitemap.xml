@@ -2,5 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rnxj.dev/</loc>
+    <lastmod>2026-07-13</lastmod>
+  </url>
+  <url>
+    <loc>https://rnxj.dev/work/luxe-pms/</loc>
+    <lastmod>2026-07-13</lastmod>
+  </url>
+  <url>
+    <loc>https://rnxj.dev/work/victorious-ministries/</loc>
+    <lastmod>2026-07-13</lastmod>
+  </url>
+  <url>
+    <loc>https://rnxj.dev/work/duck-hunt-unplugged/</loc>
+    <lastmod>2026-07-13</lastmod>
+  </url>
+  <url>
+    <loc>https://rnxj.dev/work/phonepe-nextjs/</loc>
+    <lastmod>2026-07-13</lastmod>
   </url>
 </urlset>

@@ -174,10 +174,18 @@ function StoryCopy({ kind }: { kind: "luxe" | "ministries" }) {
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <a className="fs-link" href={project.live} target="_blank" rel="noreferrer">
-        {kind === "luxe" ? "Open invite-only admin portal" : "View app landing page"}{" "}
-        <span aria-hidden="true">↗</span>
-      </a>
+      <div className="fs-links">
+        <a
+          className="fs-link"
+          href={kind === "luxe" ? "/work/luxe-pms/" : "/work/victorious-ministries/"}
+        >
+          Read the {project.name} case study <span aria-hidden="true">→</span>
+        </a>
+        <a className="fs-link" href={project.live} target="_blank" rel="noreferrer">
+          {kind === "luxe" ? "Open invite-only admin portal" : "View app landing page"}{" "}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </div>
   );
 }

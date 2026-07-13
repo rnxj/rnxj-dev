@@ -1149,11 +1149,19 @@ ul {
   padding-left: clamp(2rem, 4vw, 5rem);
 }
 
+.contact-intent {
+  max-width: 54ch;
+  margin-top: clamp(2rem, 3vw, 3rem);
+  color: var(--text-soft);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.55;
+}
+
 .accent-text {
   color: var(--accent);
 }
 
-.contact h2 + .email-copy {
+.contact-intent + .email-copy {
   margin-top: clamp(3rem, 6vw, 6rem);
 }
 

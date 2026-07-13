@@ -223,6 +223,12 @@
   text-transform: uppercase;
 }
 
+.fs-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+}
+
 .fs-showcase {
   position: relative;
   z-index: 2;

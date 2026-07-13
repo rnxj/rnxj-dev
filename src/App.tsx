@@ -29,11 +29,13 @@ function SkillLabel({ value }: { value: string }) {
 }
 
 function ProjectLinks({
+  caseStudy,
   live,
   liveLabel,
   name,
   source,
 }: {
+  caseStudy?: string;
   live?: string;
   liveLabel: string;
   name: string;
@@ -41,13 +43,14 @@ function ProjectLinks({
 }) {
   return (
     <div className="project-links">
+      {caseStudy ? <a href={caseStudy}>Read the {name} case study →</a> : null}
       {live ? (
         <a href={live} target="_blank" rel="noreferrer" aria-label={`${liveLabel}: ${name}`}>
           {liveLabel} <span aria-hidden="true">↗</span>
         </a>
       ) : null}
       {source ? (
-        <a href={source} target="_blank" rel="noreferrer" aria-label={`View ${name} source code`}>
+        <a href={source} target="_blank" rel="noreferrer" aria-label={`View source for ${name}`}>
           View source <span aria-hidden="true">↗</span>
         </a>
       ) : null}
@@ -80,6 +83,7 @@ function SecondaryWork() {
                 <p>{project.description}</p>
                 {"subline" in project ? <p className="project-subline">{project.subline}</p> : null}
                 <ProjectLinks
+                  caseStudy={"caseStudy" in project ? project.caseStudy : undefined}
                   live={"live" in project ? project.live : undefined}
                   liveLabel={project.liveLabel}
                   name={project.name}
@@ -233,6 +237,9 @@ function Contact() {
           <span>{identity.tagline[1]}</span>
           <span className="accent-text">{identity.tagline[2]}</span>
         </h2>
+        <p className="contact-intent">
+          Available for full-stack product engineering work and freelance projects.
+        </p>
         <CopyEmail email={identity.email} />
         <div className="contact-actions">
           <MagneticLink href={identity.links.schedule}>Schedule a call ↗</MagneticLink>
@@ -315,7 +322,7 @@ export function App() {
       </a>
 
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Reuel Nixon, home">
+        <a className="wordmark" href="#top" aria-label="RNXJ. — Reuel Nixon, home">
           RNXJ<span>.</span>
         </a>
         <nav className="primary-nav" aria-label="Primary navigation">
@@ -346,7 +353,7 @@ export function App() {
               <h1 id="hero-title" aria-label={identity.name}>
                 <span className="hero-line">
                   <span>REUEL</span>
-                </span>
+                </span>{" "}
                 <span className="hero-line hero-line--offset">
                   <span>NIXON</span>
                 </span>
@@ -379,16 +386,16 @@ export function App() {
           </a>
         </div>
         <nav aria-label="Social links">
-          <a href={identity.links.github} target="_blank" rel="noreferrer">
+          <a href={identity.links.github} target="_blank" rel="me noreferrer">
             GitHub ↗
           </a>
-          <a href={identity.links.linkedin} target="_blank" rel="noreferrer">
+          <a href={identity.links.linkedin} target="_blank" rel="me noreferrer">
             LinkedIn ↗
           </a>
-          <a href={identity.links.x} target="_blank" rel="noreferrer">
+          <a href={identity.links.x} target="_blank" rel="me noreferrer">
             X ↗
           </a>
-          <a href={identity.links.instagram} target="_blank" rel="noreferrer">
+          <a href={identity.links.instagram} target="_blank" rel="me noreferrer">
             Instagram ↗
           </a>
         </nav>

@@ -8,7 +8,6 @@
   overflow: hidden;
   pointer-events: none;
   isolation: isolate;
-  animation: project-aperture-arrive 420ms ease-out both;
 }
 
 .project-aperture__plane {
@@ -22,7 +21,6 @@
   background: #0b0c0a;
   box-shadow: 0 2rem 8rem rgb(0 0 0 / 40%);
   clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
-  animation: project-aperture-open 1.06s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .project-aperture__plane::before,
@@ -66,7 +64,6 @@
 .project-aperture__portrait--base {
   opacity: 0.36;
   filter: grayscale(1) contrast(1.35) brightness(0.54);
-  animation: project-aperture-resolve 1.02s steps(8, end) both;
 }
 
 .project-aperture__portrait--signal {
@@ -161,50 +158,6 @@
 
 .project-aperture[data-engaged="true"] .project-aperture__lens {
   opacity: 0.94;
-}
-
-@keyframes project-aperture-arrive {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes project-aperture-open {
-  0% {
-    clip-path: polygon(50% 48%, 50% 48%, 50% 52%, 50% 52%, 50% 52%, 50% 48%);
-    transform: scaleX(0.78);
-  }
-  52% {
-    clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
-    transform: scaleX(1);
-  }
-  64% {
-    clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
-    transform: translateX(0.8%);
-  }
-  100% {
-    clip-path: polygon(12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%, 0 13%);
-    transform: translateX(0);
-  }
-}
-
-@keyframes project-aperture-resolve {
-  0% {
-    opacity: 0;
-    filter: grayscale(1) contrast(2.4) brightness(0.25);
-    transform: scale(1.06) translateX(3%);
-  }
-  42% {
-    opacity: 0.18;
-  }
-  100% {
-    opacity: 0.36;
-    filter: grayscale(1) contrast(1.35) brightness(0.54);
-    transform: scale(1) translateX(0);
-  }
 }
 
 @keyframes project-aperture-dither {
