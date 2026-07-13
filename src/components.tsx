@@ -61,16 +61,31 @@ export function IstClock({ compact = false }: { compact?: boolean }) {
       minute: "2-digit",
       hourCycle: "h23",
     }).format(new Date());
-  const [time, setTime] = useState(format);
+  const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
-    const interval = window.setInterval(() => setTime(format()), 30_000);
-    return () => window.clearInterval(interval);
+    const syncTime = () => setTime(format());
+    const syncWhenVisible = () => {
+      if (!document.hidden) syncTime();
+    };
+
+    syncTime();
+    const interval = window.setInterval(syncTime, 15_000);
+    window.addEventListener("focus", syncTime);
+    window.addEventListener("pageshow", syncTime);
+    document.addEventListener("visibilitychange", syncWhenVisible);
+
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", syncTime);
+      window.removeEventListener("pageshow", syncTime);
+      document.removeEventListener("visibilitychange", syncWhenVisible);
+    };
   }, []);
 
   return (
-    <time className="ist-clock" dateTime={time} suppressHydrationWarning>
-      {compact ? `${time} IST` : `Local time · ${time} IST`}
+    <time className="ist-clock" dateTime={time ?? undefined}>
+      {compact ? `${time ?? "--:--"} IST` : `Local time · ${time ?? "--:--"} IST`}
     </time>
   );
 }
